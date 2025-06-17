@@ -120,12 +120,12 @@ const DishReviewForm = ({
   };
 
   // Construct context based on user
-  let context: ReviewContext;
+  let context: FormContext;
 
   if (!user) {
-    context = new ReviewContext(new GuestState());
+    context = new FormContext(new GuestState());
   } else if (!user.emailConfirmed) {
-    context = new ReviewContext(new UnverifiedState());
+    context = new FormContext(new UnverifiedState());
   } else {
     const formJSX = (
       <form onSubmit={form.handleSubmit((data) => context.submit(data))}>
@@ -198,7 +198,7 @@ const DishReviewForm = ({
     );
 
     const activeState = new ActiveState(formJSX, onSubmit);
-    context = new ReviewContext(activeState);
+    context = new FormContext(activeState);
   }
 
   return context.render();
@@ -210,7 +210,7 @@ interface UserState {
   submit?(formData: ReviewBody): void;
 }
 
-class ReviewContext {
+class FormContext {
   private state: UserState;
 
   constructor(initialState: UserState) {
